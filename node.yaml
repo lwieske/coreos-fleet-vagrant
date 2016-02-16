@@ -1,0 +1,12 @@
+#cloud-config
+
+hostname: __HOSTNAME__
+
+coreos:
+  fleet:
+    etcd-servers: __ETCD_SERVERS__
+    public-ip: $public_ipv4
+    metadata: role=node
+  units:
+    - name: fleet.service
+      command: start

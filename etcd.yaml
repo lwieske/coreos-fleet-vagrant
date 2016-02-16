@@ -1,0 +1,23 @@
+#cloud-config
+
+hostname: __HOSTNAME__
+
+coreos:
+  etcd2:
+    name: __HOSTNAME__
+    advertise-client-urls: http://$public_ipv4:2379
+    initial-advertise-peer-urls: http://$public_ipv4:2380
+    listen-client-urls: http://$public_ipv4:2379
+    listen-peer-urls: http://$public_ipv4:2380
+    initial-cluster: __INITIAL_CLUSTER__
+  fleet:
+    etcd-servers: __ETCD_SERVERS__
+    public-ip: $public_ipv4
+    metadata: role=etcd
+  units:
+    - name: systemd-timesyncd.service
+      command: start
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
